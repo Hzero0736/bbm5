@@ -1,0 +1,5 @@
+@import '../../public/dist/css/adminlte.min.css';
+@import '../../public/plugins/fontawesome-free/css/all.min.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
