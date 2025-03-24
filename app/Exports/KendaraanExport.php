@@ -57,7 +57,7 @@ class KendaraanExport implements FromCollection, WithHeadings, WithMapping
             $kendaraan->nama_kendaraan,
             $kendaraan->no_plat,
             $kendaraan->keperluan,
-            $kendaraan->user->name,
+            $kendaraan->user->nama,
             $kendaraan->user->department->nama_department,
             $kendaraan->created_at->format('d/m/Y H:i')
         ];

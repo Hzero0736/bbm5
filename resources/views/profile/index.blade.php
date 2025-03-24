@@ -38,6 +38,10 @@
                         <label><i class="fas fa-id-card mr-1"></i>NIK</label>
                         <input type="text" class="form-control bg-light" value="{{ Auth::user()->nik }}" disabled>
                     </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-building mr-1"></i>Department</label>
+                        <input type="text" class="form-control bg-light" value="{{ Auth::user()->department->nama_department}}" disabled>
+                    </div>
                 </div>
                 <div class="card-footer bg-white">
                     <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save mr-1"></i>Update Profile</button>

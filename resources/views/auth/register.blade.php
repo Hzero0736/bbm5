@@ -97,18 +97,6 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <input type="text" name="posisi" class="form-control @error('posisi') is-invalid @enderror" placeholder="Position" value="{{ old('posisi') }}">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-briefcase"></span>
-                                </div>
-                            </div>
-                            @error('posisi')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="input-group mb-3">
                             <select name="role_id" class="form-control @error('role_id') is-invalid @enderror">
                                 <option value="">Select Role</option>
                                 @foreach($roles as $role)

@@ -23,7 +23,6 @@ class User extends Authenticatable
         'password',
         'nik',
         'department_id',
-        'posisi',
         'status',
         'rejection_reason',
     ];

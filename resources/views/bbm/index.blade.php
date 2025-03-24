@@ -29,7 +29,6 @@
                             <th width="5%">No</th>
                             <th>Nama BBM</th>
                             <th>Harga</th>
-                            <th>Satuan</th>
                             <th width="15%">Aksi</th>
                         </tr>
                     </thead>
@@ -39,7 +38,6 @@
                             <td class="text-center">{{ $key + 1 }}</td>
                             <td>{{ $item->nama_bbm }}</td>
                             <td>Rp {{ number_format($item->harga_bbm, 0, ',', '.') }}</td>
-                            <td>{{ $item->satuan_bbm }}</td>
                             <td>
                                 <a href="{{ route('bbm.edit', $item->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>

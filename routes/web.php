@@ -17,6 +17,9 @@ Route::middleware(['role:Admin'])->group(function () {
     Route::get('/pending-approvals', [UserController::class, 'pendingApprovals'])->name('users.pending');
     Route::post('/users/{id}/approve', [UserController::class, 'approve'])->name('users.approve');
     Route::post('/users/{id}/reject', [UserController::class, 'reject'])->name('users.reject');
+    Route::post('/users/destroy', [UserController::class, 'destroy'])->name('users.destroy');
+
+
 
     // Department Routes
     Route::get('/departments', [DepartmentController::class, 'index'])->name('departments.index');
@@ -51,8 +54,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/claims/{claim}', [KlaimBBMController::class, 'show'])->name('claims.show');
     Route::get('/claims/{claim}/edit', [KlaimBBMController::class, 'edit'])->name('claims.edit');
     Route::put('/claims/{claim}', [KlaimBBMController::class, 'update'])->name('claims.update');
-    Route::get('/claims/{claim}/print', [KlaimBBMController::class, 'print'])->name('claims.print');
+    Route::delete('/claims/{claim}', [KlaimBBMController::class, 'destroy'])->name('claims.destroy');
     Route::get('/claims/sisa-saldo/{periode}', [KlaimBBMController::class, 'getSisaSaldo']);
+    Route::post('/claims/export', [KlaimBBMController::class, 'export'])->name('claims.export');
+
 
     // Route untuk print
     Route::get('/claims/{claim}/preview', [KlaimBBMController::class, 'preview'])->name('claims.preview');

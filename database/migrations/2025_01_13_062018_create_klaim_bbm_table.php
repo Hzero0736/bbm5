@@ -13,16 +13,20 @@ return new class extends Migration
     {
         Schema::create('klaim_bbm', function (Blueprint $table) {
             $table->id();
-            $table->string('no_acc');
-            $table->string('periode'); // Format: YYYY-MM
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('kendaraan_id')->constrained('kendaraan');
-            $table->foreignId('bbm_id')->constrained('bbm');
-            $table->decimal('jumlah_dana', 10, 2);
-            $table->decimal('saldo_liter', 8, 2)->default(200.00);
+            $table->string('klaim_id', 20)->unique()->comment('Format: KLM-YYYYMMDD-XXXX');
+            $table->string('no_acc', 20);
+            $table->string('periode', 7)->comment('Format: YYYY-MM'); // Gunakan string dengan panjang tetap
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('kendaraan_id')->constrained('kendaraan')->onDelete('cascade');
+            $table->foreignId('bbm_id')->constrained('bbm')->onDelete('cascade');
+            $table->foreignId('saldo_bbm_id')->nullable()->constrained('saldo_bbm')->onDelete('set null');
+            $table->decimal('jumlah_dana', 12, 2)->default(0);
             $table->decimal('total_penggunaan_liter', 8, 2)->default(0);
-            $table->decimal('sisa_saldo_liter', 8, 2)->default(200.00);
+            $table->text('catatan')->nullable();
             $table->timestamps();
+
+            // Index untuk mempercepat pencarian
+            $table->index(['user_id', 'periode']);
         });
     }
 

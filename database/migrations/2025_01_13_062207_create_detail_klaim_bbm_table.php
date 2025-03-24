@@ -11,13 +11,15 @@ return new class extends Migration
         Schema::create('detail_klaim_bbm', function (Blueprint $table) {
             $table->id();
             $table->foreignId('klaim_bbm_id')->constrained('klaim_bbm')->onDelete('cascade');
-            $table->string('periode');
             $table->date('tanggal');
-            $table->integer('km');
+            $table->decimal('km', 10, 3);
             $table->foreignId('bbm_id')->constrained('bbm');
             $table->decimal('liter', 10, 2);
             $table->decimal('total_harga', 12, 2);
             $table->timestamps();
+
+            // Index untuk mempercepat pencarian
+            $table->index('klaim_bbm_id');
         });
     }
 

@@ -12,13 +12,11 @@ class BBMTableSeeder extends Seeder
         BBM::create([
             'nama_bbm' => 'Pertalite',
             'harga_bbm' => 10000.00,
-            'satuan_bbm' => 'Liter'
         ]);
 
         BBM::create([
             'nama_bbm' => 'Pertamax',
             'harga_bbm' => 9000.00,
-            'satuan_bbm' => 'Liter'
         ]);
     }
 }

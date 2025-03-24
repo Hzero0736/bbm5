@@ -23,7 +23,6 @@ class BBMController extends Controller
         $request->validate([
             'nama_bbm' => 'required',
             'harga_bbm' => 'required|numeric',
-            'satuan_bbm' => 'required'
         ]);
 
         BBM::create($request->all());
@@ -40,7 +39,6 @@ class BBMController extends Controller
         $request->validate([
             'nama_bbm' => 'required',
             'harga_bbm' => 'required|numeric',
-            'satuan_bbm' => 'required'
         ]);
 
         $bbm->update($request->all());

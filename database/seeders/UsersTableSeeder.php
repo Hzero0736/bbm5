@@ -17,7 +17,6 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'department_id' => 1,
-            'posisi' => 'Admin',
             'status' => 'disetujui'
         ]);
 
@@ -28,7 +27,6 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'department_id' => 2,
-            'posisi' => 'Section Head',
             'status' => 'disetujui'
         ]);
 
@@ -39,7 +37,6 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'department_id' => 3,
-            'posisi' => 'Section Head',
             'status' => 'disetujui'
         ]);
 

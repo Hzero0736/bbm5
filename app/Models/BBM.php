@@ -11,7 +11,6 @@ class BBM extends Model
     protected $fillable = [
         'nama_bbm',
         'harga_bbm',
-        'satuan_bbm'
     ];
 
     protected $casts = [

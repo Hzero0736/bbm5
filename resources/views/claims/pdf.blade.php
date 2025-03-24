@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Claim BBM</title>
+    <title>Form Claim BBM - {{ $claim->klaim_id }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,15 +34,17 @@
             height: auto;
         }
 
-        .header div {
+        .header-info {
             text-align: right;
+            font-size: 14px;
         }
 
         .title {
             text-align: center;
             font-weight: bold;
             margin: 15px 0;
-            font-size: 14px;
+            font-size: 16px;
+            text-transform: uppercase;
         }
 
         .info-table {
@@ -53,13 +55,11 @@
 
         .info-table td {
             padding: 5px;
-            border-bottom: 1px solid #000;
-            /* Garis bawah konsisten */
+            border-bottom: 1px solid #fff;
         }
 
         .info-table tr:last-child td {
             border-bottom: none;
-            /* Hilangkan garis bawah pada baris terakhir */
         }
 
         .data-table,
@@ -78,7 +78,7 @@
         }
 
         .data-table th {
-            background-color: #f2f2f2;
+            background-color: rgb(255, 255, 255);
         }
 
         .summary {
@@ -109,6 +109,61 @@
         .signature p {
             margin: 5px 0;
         }
+
+        .footer-notes {
+            font-style: italic;
+            margin-top: 20px;
+            font-size: 11px;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-bold {
+            font-weight: bold;
+        }
+
+        .id-number {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            background-color: #dc3545;
+            border-radius: 4px;
+        }
+
+        .user-box {
+            display: inline-block;
+            /* Agar kotak hanya sebesar teks */
+            border: 1px solid #000;
+            /* Garis tepi kotak */
+            padding: 2px 5px;
+            /* Ruang di dalam kotak */
+            border-radius: 3px;
+            /* Sudut kotak yang membulat */
+        }
     </style>
 </head>
 
@@ -117,12 +172,11 @@
         <!-- Header Section -->
         <div class="header">
             <img src="{{ public_path('/dist/img/image001.png') }}" alt="Sinarmas Logo">
-            <div>
+            <div class="header-info">
                 <p>Periode: {{ Carbon\Carbon::parse($claim->periode)->format('M-Y') }}</p>
             </div>
         </div>
 
-        <!-- Title -->
         <div class="title">Form Claim BBM</div>
 
         <!-- Informasi Pemohon -->
@@ -132,16 +186,16 @@
                 <td>NIK: {{ $claim->user->nik }}</td>
             </tr>
             <tr>
-                <td>Posisi / Dept: {{ $claim->user->posisi }} / {{ $departments->first()->kode_department }}</td>
-                <td>Cost Center: {{ $departments->first()->cost_center }}</td>
+                <td>Posisi / Dept: {{ $claim->user->roles->pluck('nama')->implode(', ') }} {{ $claim->user->department->nama_department }} / {{ $claim->user->department->cost_center }}</td>
+                <td>Cost Center :{{ $claim->user->department->cost_center }}</td>
+
             </tr>
             <tr>
                 <td>Jumlah Dana: <b>Rp {{ number_format($claim->jumlah_dana, 0, ',', '.') }}</b></td>
-                <td></td> <!-- Kolom kosong untuk menjaga struktur tabel -->
+                <td>Jenis BBM: {{ $claim->bbm->nama_bbm }}</td>
             </tr>
             <tr>
                 <td>Keperluan: BBM {{ $claim->kendaraan->keperluan }} {{ $claim->kendaraan->no_plat }}</td>
-                <td>Jenis BBM: {{ $claim->bbm->nama_bbm }}</td>
             </tr>
         </table>
 
@@ -149,6 +203,7 @@
         <table class="data-table">
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>No. Acc</th>
                     <th>Uraian</th>
                     <th>Tanggal</th>
@@ -159,21 +214,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($claim->details as $detail)
+                @foreach($claim->details as $index => $detail)
                 <tr>
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ $claim->no_acc }}</td>
                     <td>BBM mobil ({{ $claim->kendaraan->no_plat }})</td>
                     <td>{{ Carbon\Carbon::parse($detail->tanggal)->format('d.m.Y') }}</td>
-                    <td>{{ number_format($detail->km, 0, ',', '.') }}</td>
+                    <td>{{ number_format($detail->km, 3, ',', '.') }}</td>
                     <td>Rp {{ number_format($detail->bbm->harga_bbm) }}</td>
-                    <td>{{ number_format($detail->liter, 2) }}</td>
+                    <td>{{ number_format($detail->liter, 2) }} L</td>
                     <td>Rp {{ number_format($detail->total_harga) }}</td>
                 </tr>
                 @endforeach
                 <tr>
-                    <td colspan="5" style="text-align: right;"><b>JUMLAH YANG DITAGIHKAN</b></td>
-                    <td><b>{{ number_format($claim->total_penggunaan_liter, 2) }}</b> L</td>
-                    <td><b>Rp {{ number_format($claim->jumlah_dana, 0, ',', '.') }}</b></td>
+                    <td colspan="6" class="text-right text-bold">JUMLAH YANG DITAGIHKAN</td>
+                    <td class="text-bold">{{ number_format($claim->total_penggunaan_liter, 2) }} L</td>
+                    <td class="text-bold">Rp {{ number_format($claim->jumlah_dana, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -184,19 +240,29 @@
                 <table class="summary-table">
                     <tr>
                         <td>Saldo Awal</td>
-                        <td>{{ number_format($claim->saldo_liter) }}</td>
+                        <td>
+                            @php
+                            $saldoAwal = isset($usedBalanceByPeriodAndUser[$claim->id]['saldo_awal'])
+                            ? $usedBalanceByPeriodAndUser[$claim->id]['saldo_awal']
+                            : ($claim->saldoBBM ? $claim->saldoBBM->saldo_awal : 200);
+                            @endphp
+                            {{ number_format($saldoAwal, 1) }} L
+                        </td>
                     </tr>
                     <tr>
-                        <td>Jumlah Penggantian BBM</td>
-                        <td>{{ number_format($claim->total_penggunaan_liter, 2) }} L</td>
+                        <td>Penggunaan BBM</td>
+                        <td>{{ number_format($claim->total_penggunaan_liter, 1) }} L</td>
                     </tr>
                     <tr>
-                        <td>Jumlah yang sudah diambil</td>
-                        <td>{{ number_format($claim->total_penggunaan_liter, 2) }} L</td>
-                    </tr>
-                    <tr>
-                        <td>Sisa di Warehouse</td>
-                        <td>{{ number_format($claim->sisa_saldo_liter, 2) }} L</td>
+                        <td>Sisa Saldo</td>
+                        <td>
+                            @php
+                            $sisaSaldo = isset($usedBalanceByPeriodAndUser[$claim->id]['sisa_saldo'])
+                            ? $usedBalanceByPeriodAndUser[$claim->id]['sisa_saldo']
+                            : ($claim->saldoBBM ? $claim->saldoBBM->sisa_saldo : (200 - $claim->total_penggunaan_liter));
+                            @endphp
+                            {{ number_format($sisaSaldo, 1) }} L
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -206,13 +272,19 @@
         <div class="signature">
             <div>
                 <p>Diminta oleh:</p>
-                <div class="signature-box">User</div>
+                <div class="signature-box"></div>
+                <p>(<span class="user-box">User </span>)</p> <!-- Menambahkan kotak di sekitar "User " -->
                 <p><b>{{ $claim->user->nama }}</b></p>
             </div>
-            <div>
-                <p>*Minimal setingkat section head</p>
-                <p>*Wajib melampirkan seluruh nota print pembelian</p>
-            </div>
+        </div>
+
+        <!-- Footer Notes -->
+        <div class="footer-notes">
+            @if($claim->catatan)
+            <p>*Catatan: {{ $claim->catatan }}</p>
+            @endif
+            <p>*Minimal setingkat section head</p>
+            <p>*Wajib melampirkan seluruh nota print pembelian</p>
         </div>
     </div>
 </body>

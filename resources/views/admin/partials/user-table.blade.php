@@ -1,29 +1,32 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
+            @if(in_array($status, ['disetujui', 'ditolak']))
+            <th>
+                <input type="checkbox" id="select-all">
+            </th>
+            @endif
             <th>Nama</th>
             <th>NIK</th>
             <th>Email</th>
             <th>Department</th>
-            <th>Posisi</th>
             <th>Role</th>
             <th>Status</th>
-            @if($status == 'menunggu')
             <th>Aksi</th>
-            @endif
-            @if($status == 'ditolak')
-            <th>Alasan Penolakan</th>
-            @endif
         </tr>
     </thead>
     <tbody>
         @forelse($users as $user)
         <tr>
+            @if(in_array($status, ['disetujui', 'ditolak']))
+            <td>
+                <input type="checkbox" class="user-checkbox" value="{{ $user->id }}">
+            </td>
+            @endif
             <td>{{ $user->nama }}</td>
             <td>{{ $user->nik }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->department->nama_department }}</td>
-            <td>{{ $user->posisi }}</td>
             <td>{{ $user->roles->implode('nama', ', ') }}</td>
             <td>
                 @if($user->status == 'menunggu')
@@ -34,26 +37,29 @@
                 <span class="badge badge-danger">Ditolak</span>
                 @endif
             </td>
-            @if($status == 'menunggu')
             <td>
-                <form action="{{ route('users.approve', $user->id) }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-success btn-sm">
-                        <i class="fas fa-check"></i> Setujui
-                    </button>
-                </form>
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#rejectModal{{ $user->id }}">
+                @if($status == 'menunggu')
+                <button class="btn btn-success btn-sm approve-btn" data-id="{{ $user->id }}">
+                    <i class="fas fa-check"></i>
+                </button>
+                <button class="btn btn-danger btn-sm btn-reject" data-id="{{ $user->id }}">
                     <i class="fas fa-times"></i> Tolak
                 </button>
+
+
+                @else
+                @if(Auth::id() !== $user->id)
+                <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $user->id }}">
+                    <i class="fas fa-trash"></i>
+                </button>
+                @endif
+
+                @endif
             </td>
-            @endif
-            @if($status == 'ditolak')
-            <td>{{ $user->rejection_reason }}</td>
-            @endif
         </tr>
         @empty
         <tr>
-            <td colspan="7" class="text-center">Tidak ada data user</td>
+            <td colspan="8" class="text-center">Tidak ada data</td>
         </tr>
         @endforelse
     </tbody>

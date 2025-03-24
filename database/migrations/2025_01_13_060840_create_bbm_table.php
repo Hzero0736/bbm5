@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('nama_bbm');
             $table->decimal('harga_bbm', 10, 2);
-            $table->string('satuan_bbm')->default('Liter');
             $table->timestamps();
         });
     }

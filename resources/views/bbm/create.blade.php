@@ -28,13 +28,6 @@
                         @enderror
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Satuan</label>
-                    <input type="text" name="satuan_bbm" class="form-control @error('satuan_bbm') is-invalid @enderror" value="Liter" readonly>
-                    @error('satuan_bbm')
-                    <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
-                </div>
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Simpan</button>

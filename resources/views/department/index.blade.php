@@ -12,14 +12,6 @@
 
 @section('content')
 
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
 
 <div class="row">
     <div class="col-12">
@@ -50,10 +42,10 @@
                             <td>
                                 <div class="btn-group">
                                     <button class="btn btn-sm btn-warning" onclick="editDepartment({{ $department->id }})">
-                                        <i class="fas fa-edit"></i> Edit
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-danger btn-sm" onclick="confirmDelete({{ $department->id }})">
-                                        <i class="fas fa-trash"></i> Hapus
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                                 <form id="delete-form-{{ $department->id }}" action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: none;">
